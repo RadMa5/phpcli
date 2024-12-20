@@ -11,6 +11,7 @@ use App\EventSender\EventSender;
 use App\Models\Event;
 
 //use App\Models\EventDto;
+use App\Telegram\TelegramApiImpl;
 
 class HandleEventsCommand extends Command
 
@@ -34,13 +35,13 @@ class HandleEventsCommand extends Command
 
         $events = $event->select();
 
-        $eventSender = new EventSender();
+        $eventSender = new EventSender(new TelegramApiImpl($this->app->env('TELEGRAM')));
 
         foreach ($events as $event) {
 
             if ($this->shouldEventBeRan($event)) {
 
-                $eventSender->sendMessage($event->receiverId, $event->text);
+                $eventSender->sendMessage($event['receive_id'], $event['text']);
 
             }
 
