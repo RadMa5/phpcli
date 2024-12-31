@@ -65,7 +65,7 @@ class HandleEventsDaemonCommand extends Command
         }
     }
 
-    public function getCurrentTime(): array
+    private function getCurrentTime(): array
     {
         return [
             date("i"),
