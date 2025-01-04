@@ -2,15 +2,11 @@
 
 namespace App\Commands;
 
+use App\Actions\EventRunner;
 use App\Application;
-
 use App\Database\SQLite;
-
 use App\EventSender\EventSender;
-
 use App\Models\Event;
-
-//use App\Models\EventDto;
 use App\Telegram\TelegramApiImpl;
 
 class HandleEventsCommand extends Command
@@ -36,14 +32,11 @@ class HandleEventsCommand extends Command
         $events = $event->select();
 
         $eventSender = new EventSender(new TelegramApiImpl($this->app->env('TELEGRAM')));
+        $eventRunner = new EventRunner($eventSender);
 
         foreach ($events as $event) {
 
-            if ($this->shouldEventBeRan($event)) {
-
-                $eventSender->sendMessage($event['receive_id'], $event['text']);
-
-            }
+            $eventRunner->handle($event);
 
         }
 
