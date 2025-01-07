@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Telegram;
+use App\Application;
 
 class TelegramApiImpl implements TelegramApi {
     const ENDPOINT = 'https://api.telegram.org/bot';
@@ -57,4 +58,5 @@ class TelegramApiImpl implements TelegramApi {
         curl_exec($ch);
         curl_close($ch);
     }
+
 }
